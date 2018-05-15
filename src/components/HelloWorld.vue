@@ -1,57 +1,75 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://github.com/vuejs/vue-cli/tree/dev/docs" target="_blank">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa" target="_blank">pwa</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org/en/essentials/getting-started.html" target="_blank">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org/en/intro.html" target="_blank">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+    <section>
+      <h2>Nice list</h2>
+      <div>
+        <input
+          v-model="newLabel"
+          placeholder="Type new item"
+          @keyup.enter="addItem()"
+        >
+      </div>
+      <ul>
+        <li
+          v-for="item in list"
+          :key="item.id"
+          :data-id="item.id"
+        >{{ item.label }}</li>
+      </ul>
+    </section>
   </div>
 </template>
 
 <script>
+let uid = 3
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
-  }
+
+  data () {
+    return {
+      newLabel: '',
+      list: [{ id: 1, label: 'foo' }, { id: 2, label: 'bar' }],
+    }
+  },
+
+  computed: {
+    newItemValid () {
+      return !!this.newLabel
+    },
+  },
+
+  mounted () {
+    console.log('%cHelloWorld Vue component', 'color: #2c3e50; background: #42b983; padding: 2px; border-radius: 3px;')
+    console.log('It has `$data`, `$props` and computed props which are also proxied on the instance.')
+    console.log(this)
+  },
+
+  methods: {
+    addItem () {
+      this.list.push({
+        id: uid++,
+        label: this.newLabel,
+      })
+      this.newLabel = ''
+    },
+  },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="stylus">
-h3
-  margin 40px 0 0
+<style lang="stylus" scoped>
+h1,
+h2
+  font-weight normal
 
 ul
   list-style-type none
   padding 0
 
 li
-  display inline-block
   margin 0 10px
 
 a
   color #42b983
+
 </style>

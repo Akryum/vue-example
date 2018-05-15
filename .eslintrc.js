@@ -1,7 +1,10 @@
 module.exports = {
   root: true,
-  'extends': [
+  extends: [
     'plugin:vue/essential',
     '@vue/standard'
-  ]
+  ],
+  rules: {
+    'comma-dangle': ['error', 'always-multiline']
+  }
 }
