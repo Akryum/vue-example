@@ -4,13 +4,23 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-
+  state () {
+    return {
+      loading: 0,
+    }
   },
+
+  getters: {
+    loading: state => state.loading > 0,
+  },
+
   mutations: {
+    loadingAdd (state) {
+      state.loading++
+    },
 
-  },
-  actions: {
-
+    loadingRemove (state) {
+      state.loading--
+    },
   },
 })

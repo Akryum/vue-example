@@ -6,8 +6,16 @@
         <input
           v-model="newLabel"
           placeholder="Type new item"
+          :disabled="loading"
           @keyup.enter="addItem()"
         >
+        <button
+          type="button"
+          :disabled="loading || !newItemValid"
+          @click="addItem()"
+        >Add</button>
+
+        <span v-if="loading">Loading...</span>
       </div>
       <ul>
         <li
@@ -21,7 +29,12 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
+const CONSOLE_STYLE = 'color: #2c3e50; background: #42b983; padding: 2px; border-radius: 3px;'
+
 let uid = 3
+
 export default {
   name: 'HelloWorld',
 
@@ -33,24 +46,43 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      'loading',
+    ]),
+
     newItemValid () {
       return !!this.newLabel
     },
   },
 
   mounted () {
-    console.log('%cHelloWorld Vue component', 'color: #2c3e50; background: #42b983; padding: 2px; border-radius: 3px;')
+    console.log('%cHelloWorld Vue component', CONSOLE_STYLE)
     console.log('It has `$data`, `$props` and computed props which are also proxied on the instance.')
     console.log(this)
+
+    console.log('%cVuex store', CONSOLE_STYLE)
+    console.log('It has `state` and `getters` as data.')
+    console.log(this.$store)
   },
 
   methods: {
+    ...mapMutations([
+      'loadingAdd',
+      'loadingRemove',
+    ]),
+
     addItem () {
-      this.list.push({
-        id: uid++,
-        label: this.newLabel,
-      })
-      this.newLabel = ''
+      if (!this.loading) {
+        this.loadingAdd()
+        setTimeout(() => {
+          this.list.push({
+            id: uid++,
+            label: this.newLabel,
+          })
+          this.newLabel = ''
+          this.loadingRemove()
+        }, 1000)
+      }
     },
   },
 }
