@@ -18,11 +18,11 @@
         <span v-if="loading">Loading...</span>
       </div>
       <ul>
-        <li
+        <Item
           v-for="item in list"
           :key="item.id"
-          :data-id="item.id"
-        >{{ item.label }}</li>
+          :item="item"
+        />
       </ul>
     </section>
   </div>
@@ -30,13 +30,17 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-
-const CONSOLE_STYLE = 'color: #2c3e50; background: #42b983; padding: 2px; border-radius: 3px;'
+import Item from './Item.vue'
+import { CONSOLE_STYLE } from '../misc'
 
 let uid = 3
 
 export default {
   name: 'HelloWorld',
+
+  components: {
+    Item,
+  },
 
   data () {
     return {
@@ -56,7 +60,7 @@ export default {
   },
 
   mounted () {
-    console.log('%cHelloWorld Vue component', CONSOLE_STYLE)
+    console.log('%cList component', CONSOLE_STYLE)
     console.log('It has `$data`, `$props` and computed props which are also proxied on the instance.')
     console.log(this)
 
